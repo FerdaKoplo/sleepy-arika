@@ -38,7 +38,7 @@ The write-behind cluster. Requests interact exclusively with RAM.
 ### The Background Worker (`flushPendingSyncs`)
 Instead of saving data during a frantic API request, the worker runs quietly on a 10-second timer:
 1. **Checks the To-Do List:** Looks at `pendingSyncs` to see if any user profiles were modified.
-2. **Gathers the Data:** Temporarily clears the list and reaches into Aika's pockets to grab the latest state.
+2. **Gathers the Data:** Temporarily clears the list and reaches into Arika's pockets to grab the latest state.
 3. **The Big Batch Save:** Bundles all updates into a single, highly efficient `prisma.$transaction` and saves them to MySQL all at once.
 4. **The Failsafe:** If the database goes offline, the worker catches the error, puts everyone back on the to-do list, and simply tries again 10 seconds later.
 
@@ -61,7 +61,7 @@ The APIs were stress-tested using Postman's Collection Runner to simulate a high
   <img src="./assets/results/clustered_result.png" width="45%" alt="Overclocked API Postman Results">
 </p>
 
-| Performance Metric | Sleepy Aika (Direct DB) | Awake Aika (Memory Cluster) |
+| Performance Metric | Sleepy Arika (Direct DB) | Awake Arika (Memory Cluster) |
 | :--- | :--- | :--- |
 | **Total Requests** | 12,134 | **12,464** |
 | **Average Response**| 13 ms | **2 ms** |
@@ -83,20 +83,29 @@ The APIs were stress-tested using Postman's Collection Runner to simulate a high
    npm install
    ```
 
-   ```bash
 2. **Start the Database**
    Spin up the MySQL container using Docker Compose:
+
+   ```bash
    docker compose up -d
    ```
 
-   ```bash
 3. **Configure the Environment**
    Generate the Prisma Client and push the table structure to MySQL:
+
+   ```bash
+  DATABASE_URL="mysql://admin:password@127.0.0.1:3306/arika-db"
+   ```
+
+4. **Push the Schema**
+   Generate the Prisma Client and push the table structure to MySQL:
+   ```bash 
    npx prisma db push
    ```
 
-   ```bash
-4. **Run the Server** 
+5. **Run the Server** 
    Start the development server (runs on port 3005):
+
+   ```bash
    npm run dev
    ```
