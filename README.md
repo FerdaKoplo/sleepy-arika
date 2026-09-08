@@ -4,7 +4,6 @@ A high-performance backend architecture experiment comparing traditional synchro
 
 This repository demonstrates how shifting active user state into memory before lazily syncing it to a database can eliminate disk I/O bottlenecks and drastically reduce latency spikes under heavy load.
 
----
 
 ## The Struggle : Waking Up Arika
 
@@ -20,7 +19,6 @@ As her instructor, I had to find a way to wake her up.
 
 By taking away her physical notebook and forcing her to hold active data directly in her short-term memory (RAM), Arika became entirely immune to disk fatigue. She might be pouting about the strict new workflow, but with a background worker quietly handling the database syncs for her, she easily handles 100 concurrent users with a flawless 2ms response time.
 
----
 
 ## Architecture
 
@@ -42,7 +40,6 @@ Instead of saving data during a frantic API request, the worker runs quietly on 
 3. **The Big Batch Save:** Bundles all updates into a single, highly efficient `prisma.$transaction` and saves them to MySQL all at once.
 4. **The Failsafe:** If the database goes offline, the worker catches the error, puts everyone back on the to-do list, and simply tries again 10 seconds later.
 
----
 
 ## Load Testing & Benchmarks
 
@@ -72,7 +69,6 @@ The APIs were stress-tested using Postman's Collection Runner to simulate a high
 * **Eliminated the Bottleneck:** Under sustained pressure, the traditional connection pool choked on the top 1% of requests, queuing for up to 220ms. The memory cluster absorbed the same pressure in just 9ms.
 * **The Worker "Blip":** A microscopic fraction of clustered requests hit a max response time of 185ms. This represents the exact 10-second interval where the background worker briefly utilizes the event loop to execute the bulk database transaction, proving the sync operates without crippling the main thread.
 
----
 
 ## Your Turn to Wake Her Up 
 
