@@ -94,7 +94,7 @@ The APIs were stress-tested using Postman's Collection Runner to simulate a high
    Generate the Prisma Client and push the table structure to MySQL:
 
    ```bash
-  DATABASE_URL="mysql://admin:password@127.0.0.1:3306/arika-db"
+   DATABASE_URL="mysql://admin:password@127.0.0.1:3306/arika-db"
    ```
 
 4. **Push the Schema**
