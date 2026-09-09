@@ -4,8 +4,9 @@ import { ProfileRequest, ProfileUpdatePayload } from "./pockets/type";
 import { prisma } from "./compartments/adapter";
 import { flushPendingSyncs } from "./sleeves/worker";
 import { emptyingPocket } from "./sleeves/instruction";
+import { clusteredRouteOpts } from "./sleeves/schema";
 
-const app = Fastify({ logger: false });
+const app = Fastify({ logger: false, keepAliveTimeout: 60000 });
 const PORT = parseInt(process.env.PORT || "3005", 10);
 
 // calling the trick under the sleeves :00
@@ -46,7 +47,8 @@ app.post(
 
 app.post(
   "/api/clustered/profile/:id",
-  (request: ProfileRequest, reply: FastifyReply) => {
+  clusteredRouteOpts,
+  (request: ProfileRequest) => {
     const userId = request.params.id;
     const { username, actionsLogged } = request.body;
 
