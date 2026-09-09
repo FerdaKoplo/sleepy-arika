@@ -1,29 +1,29 @@
 {
   "name": "arika-bench",
   "version": "1.0.0",
-  "description": "",
+  "description": "A high-performance backend architecture experiment comparing traditional synchronous database writes against a RAM-based **write-behind memory cluster**.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create-arika": "./bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FerdaKoplo/sleepy-arika.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@prisma/adapter-mariadb": "^7.10.0",
-    "@prisma/client": "^7.10.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mariadb": "^3.5.4"
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/FerdaKoplo/sleepy-arika/issues"
   },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.4.1",
-    "nodemon": "^3.1.14",
-    "prisma": "^7.10.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+  "homepage": "https://github.com/FerdaKoplo/sleepy-arika#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^15.0.0",
+    "fs-extra": "^11.4.0"
   }
 }
