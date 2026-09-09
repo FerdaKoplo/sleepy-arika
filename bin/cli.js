@@ -62,19 +62,6 @@ program
         response.database,
       );
 
-      // fs.copySync(
-      //   path.join(dbOptionsPath, "docker-compose.yml"),
-      //   path.join(targetPath, "docker-compose.yml"),
-      // );
-      // fs.copySync(
-      //   path.join(dbOptionsPath, "schema.prisma"),
-      //   path.join(targetPath, "prisma", "schema.prisma"),
-      // );
-      // fs.copySync(
-      //   path.join(dbOptionsPath, "prisma.config.ts"),
-      //   path.join(targetPath, "prisma.config.ts"),
-      // );
-
       const basePackagePath = path.join(targetPath, "package.json");
       const dockerFile = path.join(dbOptionsPath, "docker-compose.yml");
       const schemaFile = path.join(dbOptionsPath, "schema.prisma");
@@ -87,7 +74,7 @@ program
         fs.copySync(schemaFile, path.join(targetPath, "schema.prisma"));
       }
       if (fs.existsSync(adapterFile)) {
-        fs.copySync(adapterFile, path.join(targetPath, "adapter.ts")); // Changed to adapter.ts
+        fs.copySync(adapterFile, path.join(targetPath, "adapter.ts"));
       }
 
       const depsFragmentPath = path.join(dbOptionsPath, "deps.json");

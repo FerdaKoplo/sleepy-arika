@@ -13,14 +13,12 @@
   "dependencies": {
     "@prisma/client": "^7.10.0",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "fastify": "^4.26.0"
   },
   "bin": {
     "create-arika": "./bin/cli.js"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
     "nodemon": "^3.1.14",
     "prisma": "^7.10.0",

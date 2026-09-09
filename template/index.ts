@@ -1,38 +1,23 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
+import Fastify, { FastifyRequest, FastifyReply } from "fastify";
 import { memoryBlocks, pendingSyncs } from "./pockets/cluster";
-import { ProfileUpdatePayload } from "./pockets/type";
+import { ProfileRequest, ProfileUpdatePayload } from "./pockets/type";
 import { prisma } from "./compartments/adapter";
 import { flushPendingSyncs } from "./sleeves/worker";
 import { emptyingPocket } from "./sleeves/instruction";
 
-const app = express();
-const PORT = process.env.PORT || 3005;
-
-app.use(cors());
-app.use(express.json());
+const app = Fastify({ logger: false });
+const PORT = parseInt(process.env.PORT || "3005", 10);
 
 // calling the trick under the sleeves :00
-
 setInterval(() => {
   flushPendingSyncs().catch(console.error);
 }, 10000);
 
-app.listen(PORT, () => {
-  console.log(`Arika still tired but her dream is somewhere beyond : ${PORT}`);
-  console.log(`My trick is syncing every 10s!`);
-});
-
 app.post(
   "/api/unclustered/profile/:id",
-  async (
-    req: Request<{ id: string }, {}, ProfileUpdatePayload>,
-    res: Response,
-  ): Promise<void> => {
-    const userId = req.params.id;
-    const { username, actionsLogged } = req.body;
-
-    // conventional prisma call
+  async (request: ProfileRequest, reply: FastifyReply) => {
+    const userId = request.params.id;
+    const { username, actionsLogged } = request.body;
 
     try {
       const dbProfile = await prisma.profile.upsert({
@@ -50,23 +35,20 @@ app.post(
         },
       });
 
-      res.json({ message: "Database update complete", data: dbProfile });
+      return { message: "Database update complete", data: dbProfile };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Database error";
-      res.status(500).json({ error: errorMessage });
+      return reply.status(500).send({ error: errorMessage });
     }
   },
 );
 
 app.post(
   "/api/clustered/profile/:id",
-  (
-    req: Request<{ id: string }, {}, ProfileUpdatePayload>,
-    res: Response,
-  ): void => {
-    const userId = req.params.id;
-    const { username, actionsLogged } = req.body;
+  (request: ProfileRequest, reply: FastifyReply) => {
+    const userId = request.params.id;
+    const { username, actionsLogged } = request.body;
 
     // Retrived the existing pockets / data
     const currentPocket = memoryBlocks.get(userId);
@@ -87,12 +69,27 @@ app.post(
     });
 
     pendingSyncs.add(userId);
-    res.json({
+
+    // Return instantly
+    return {
       message: "Memory cluster updated instantly",
       data: updatedProfile,
-    });
+    };
   },
 );
 
 process.on("SIGINT", () => emptyingPocket("SIGINT"));
 process.on("SIGTERM", () => emptyingPocket("SIGTERM"));
+
+const start = async () => {
+  try {
+    await app.listen({ port: PORT, host: "0.0.0.0" });
+    console.log(`Arika is awake but her dream is somewhere beyond : ${PORT}`);
+    console.log(`My trick is syncing every 10s!`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+
+start();
