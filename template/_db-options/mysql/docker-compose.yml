@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  arika-db:
+    image: mariadb:10.11
+    container_name: arika-mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: password
+      MARIADB_DATABASE: arika-db

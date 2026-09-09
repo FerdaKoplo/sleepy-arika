@@ -1,0 +1,14 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+}
+
+model Profile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  username      String   @unique
+  actionsLogged Int      @default(0)
+  lastActive    DateTime @updatedAt
+}
