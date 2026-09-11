@@ -1,4 +1,4 @@
-import { prisma } from "../compartments/adapter";
+import { prisma } from "compartments/adapter";
 import { flushPendingSyncs } from "./worker";
 
 export async function emptyingPocket(item: string) {

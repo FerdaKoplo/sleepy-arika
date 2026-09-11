@@ -1,11 +1,7 @@
-import { igniteArika } from "./arika/engine";
-import {
-  clusteredProfileRoute,
-  unclusteredProfileRoute,
-} from "./whispers/profile";
+import { Arika } from "@arika/tools/loom";
+import { ProfileSyncDream } from "dreams/profile-sync.dream";
+import { clusteredProfileWhisper } from "whispers/profile.whisper";
 
-igniteArika({
-  port: parseInt(process.env.PORT || "3005", 10),
-  syncIntervalMs: 10000,
-  whispers: [clusteredProfileRoute, unclusteredProfileRoute],
-});
+const arika = new Arika();
+
+arika.onSync(ProfileSyncDream).whispers([clusteredProfileWhisper]).wake(3005);

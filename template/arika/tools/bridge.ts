@@ -1,6 +1,9 @@
 import process from "node:process";
 import cluster from "node:cluster";
-import { ForwardCacheMutateMessage, CacheMutatePayload } from "../pockets/type";
+import {
+  CacheMutatePayload,
+  ForwardCacheMutateMessage,
+} from "@arika/pockets/type";
 
 export function sendToPrimary(message: ForwardCacheMutateMessage): void {
   if (process.send) {
@@ -22,7 +25,8 @@ export function onWorkerMessage(
     if (
       typeof message === "object" &&
       message !== null &&
-      "userId" in message
+      "key" in message &&
+      "data" in message
     ) {
       handler(message as CacheMutatePayload);
     }

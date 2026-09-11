@@ -4,8 +4,8 @@
   "description": "A high-performance backend architecture experiment comparing traditional synchronous database writes against a RAM-based **write-behind memory cluster**.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.ts"
+    "dev": "nodemon --exec 'ts-node -r tsconfig-paths/register' index.ts",
+    "start": "ts-node -r tsconfig-paths/register index.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,8 @@
     "nodemon": "^3.1.14",
     "prisma": "^7.10.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "tsconfig-paths": "^4.2.0"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
+import { ArikaRing } from "@arika/pockets/ring";
+import { CacheMutatePayload } from "@arika/pockets/type";
 import {
   FastifyReply,
   FastifyRequest,
   RouteShorthandOptions,
   RouteGenericInterface,
 } from "fastify";
-import { ArikaRing } from "../pockets/ring";
-import { CacheMutatePayload } from "../pockets/type";
 
 export interface ArikaContext {
   ring: ArikaRing;
